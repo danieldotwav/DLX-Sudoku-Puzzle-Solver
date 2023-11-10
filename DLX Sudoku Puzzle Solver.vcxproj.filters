@@ -37,5 +37,9 @@
     <None Include="docs\dlx-solver.js" />
     <None Include="docs\index.html" />
     <None Include="docs\style.css" />
+    <None Include="README.md" />
+    <None Include="dlx-solver.js" />
+    <None Include="index.html" />
+    <None Include="style.css" />
   </ItemGroup>
 </Project>

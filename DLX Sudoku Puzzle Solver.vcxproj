@@ -136,9 +136,13 @@
     <ClInclude Include="Node.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="dlx-solver.js" />
     <None Include="docs\dlx-solver.js" />
     <None Include="docs\index.html" />
     <None Include="docs\style.css" />
+    <None Include="index.html" />
+    <None Include="README.md" />
+    <None Include="style.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
