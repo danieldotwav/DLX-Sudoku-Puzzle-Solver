@@ -20,10 +20,10 @@ This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver
 
 [Online Sudoku Solver](https://danieldotwav.github.io/DLX-Sudoku-Puzzle-Solver/)
 
-**Interactive Solver**: Enter Sudoku puzzles manually or paste pre-filled grids.
-**Automatic Solution**: Solves puzzles instantly and indicates if no solution exists.
-**Modern UI**: Aesthetically pleasing interface with intuitive design and responsive layout.
-**Cross-Platform Compatibility**: Accessible through any modern web browser
+- **Interactive Solver**: Enter Sudoku puzzles manually or paste pre-filled grids.
+- **Automatic Solution**: Solves puzzles instantly and indicates if no solution exists.
+- **Modern UI**: Aesthetically pleasing interface with intuitive design and responsive layout.
+- **Cross-Platform Compatibility**: Accessible through any modern web browser
 
 ## Getting Started
 
