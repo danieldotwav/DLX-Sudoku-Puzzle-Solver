@@ -1,5 +1,5 @@
 # DLX-Sudoku-Puzzle-Solver
-This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver implementing Donald Knuth's Dancing Links Algorithm. This project not only allows for solving traditional Sudoku puzzles but also offers a unique, interactive experience through its web-based interface.
+
 
 ## Introduction
 
