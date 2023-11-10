@@ -6,7 +6,8 @@ This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver
 
 ## Features
 
-### Console Application: Run Source.cpp and follow the on-screen instructions to generate and solve Sudoku puzzles.
+### Console Application: 
+**Run Source.cpp and follow the on-screen instructions to generate and solve Sudoku puzzles.**
 
 - Dancing Links Algorithm: Implemented in DancingLinks.h and DancingLinks.cpp for efficient puzzle solving.
 - Menu-Driven Interface: Easy-to-navigate menu for generating and solving Sudoku puzzles.
@@ -14,7 +15,8 @@ This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver
 - Multiple Solving Methods: Select from various backtracking methods to solve the puzzles.
 - ASCII Puzzle Representation: Visualize Sudoku grids in ASCII format, both pre and post-solution.
 
-### Web-Based Solver: Click on the link below, enter a Sudoku puzzle, and use the solve feature.
+### Web-Based Solver: 
+**Click on the link below, enter a Sudoku puzzle, and use the solve feature.**
 
 [Online Sudoku Solver](https://danieldotwav.github.io/DLX-Sudoku-Puzzle-Solver/)
 
