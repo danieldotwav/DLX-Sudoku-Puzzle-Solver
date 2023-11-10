@@ -1,0 +1,190 @@
+html, body, div {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: middle;
+    background-color: floralwhite;
+}
+
+#SudokuGrid {
+    height: 500px;
+    min-height: 20%;
+    position: static;
+    border: 4px solid black;
+    border-collapse: collapse;
+    margin-top: 10%;
+    background-color: white;
+}
+
+#OutcomeText {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    height: 20px; /* Allocate space for when the text is visible */
+    line-height: 20px; /* Center the text vertically */
+}
+
+.outcome-text {
+    text-align: center;
+    margin-bottom: 10px; /* Adjust as needed */
+    margin-top: 10px;
+    font-size: 18px; /* Adjust as needed */
+    /* Add more styling as needed */
+}
+
+.header {
+    display: flex; /* This will establish a flex container */
+    justify-content: space-between; /* This will space out the children */
+    align-items: center; /* This will vertically center the children */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 60px;
+    background: black;
+    color: white;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 24.99px;
+    margin-right: 40px;
+    margin-left: 40px;
+    text-align: left;
+}
+
+h2 {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 24.99px;
+    margin-right: 40px;
+    margin-left: 40px;
+    text-align: right;
+}
+
+td {
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+}
+
+input[type="text"] {
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: center;
+    font-size: 30px;
+    color: #beb0e9;
+    outline: none;
+}
+
+    input[type="text"]:hover {
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, and color */
+    }
+
+    input[type="text"]:focus {
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3); /* Adjust the color or size as needed */
+    }
+
+.unit {
+    border-right: 2px solid black;
+}
+
+.unit_border {
+    border-right: 4px solid black;
+}
+
+.column {
+    border-bottom: 2px solid black;
+}
+
+.column_border {
+    border-bottom: 4px solid black;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.push {
+    margin-bottom: 50%
+}
+
+.clear {
+    clear: both;
+}
+
+.buttons {
+    text-align: center;
+    margin-top: 0%;
+    height: 50px;
+}
+
+.ButtonClass {
+    border: solid 0 #000000;
+    margin-left: 1%;
+    margin-right: 1%;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+    color: #ffffff;
+    padding: 1px 17px;
+    background-color: #000000;
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer;
+}
+
+    .ButtonClass:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(to bottom, #000000 5%, #000000 100%);
+        background-color: #000000;
+    }
+
+    .ButtonClass:active {
+        position: relative;
+        top: 1px;
+    }
+
+.custom-button {
+    background-color: black; /* Example background color */
+    color: white; /* Text color */
+    border: solid 0 #000000;
+    margin-left: 1%;
+    margin-right: 1%;
+    padding: 1px 17px; /* Example padding */
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px; /* Rounded corners for button */
+    display: inline-flex; /* Use flexbox for proper alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+}
+
+    .custom-button:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(to bottom, #000000 5%, #000000 100%);
+        background-color: #000000;
+    }
+
+    .custom-button:active {
+        position: relative;
+        top: 1px;
+    }
+
+    .custom-button i {
+        margin-right: 8px; /* Add some space between the icon and text */
+    }
