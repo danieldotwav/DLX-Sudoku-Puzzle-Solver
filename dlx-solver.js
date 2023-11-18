@@ -1,3 +1,37 @@
+let timer;
+let seconds = 0;
+
+function startTimer() {
+	timer = setInterval(function () {
+		seconds++;
+		document.getElementById('timer').innerHTML = 'Time: ' + formatTime(seconds);
+	}, 1000);
+}
+
+function stopTimer() {
+	clearInterval(timer);
+}
+
+function resetTimer() {
+	stopTimer();
+	seconds = 0;
+	document.getElementById('timer').innerHTML = 'Time: 00:00';
+}
+
+function formatTime(sec) {
+	let hours = Math.floor(sec / 3600);
+	let minutes = Math.floor((sec - (hours * 3600)) / 60);
+	let seconds = sec - (hours * 3600) - (minutes * 60);
+
+	if (hours < 10) { hours = "0" + hours; }
+	if (minutes < 10) { minutes = "0" + minutes; }
+	if (seconds < 10) { seconds = "0" + seconds; }
+	return hours + ':' + minutes + ':' + seconds;
+}
+
+// Start the timer when the page loads
+window.onload = startTimer;
+
 var SIZE = 9;
 var SIZE_SQUARED = SIZE * SIZE;
 var SIZE_SQRT = Math.sqrt(SIZE);

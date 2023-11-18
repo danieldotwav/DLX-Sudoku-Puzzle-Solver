@@ -34,12 +34,14 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="docs\dlx-solver.js" />
-    <None Include="docs\index.html" />
-    <None Include="docs\style.css" />
-    <None Include="README.md" />
-    <None Include="dlx-solver.js" />
-    <None Include="index.html" />
-    <None Include="style.css" />
+    <None Include="docs\dlx-solver.js">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="docs\index.html">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="docs\style.css">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
