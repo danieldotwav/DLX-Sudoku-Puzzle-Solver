@@ -43,5 +43,8 @@
     <None Include="docs\style.css">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="dlx-solver.js" />
+    <None Include="index.html" />
+    <None Include="style.css" />
   </ItemGroup>
 </Project>

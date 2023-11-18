@@ -1,42 +1,108 @@
 let timer;
-let seconds = 0;
+let startTime;
+let elapsedTime = 0; // Hold the elapsed time when paused
+let isPaused = true; // Track the state of the timer
+let hasTimerStarted = false;
+
+window.onload = function () {
+	resetTimer();
+	updateButton('Start Timer', 'fa-play');
+};
+
+function updateButton(text, iconClass) {
+	const pauseButton = document.getElementById('PauseButton');
+	pauseButton.innerHTML = `<i class="fas ${iconClass}"></i> ${text}`;
+}
 
 function startTimer() {
-	timer = setInterval(function () {
-		seconds++;
-		document.getElementById('timer').innerHTML = 'Time: ' + formatTime(seconds);
-	}, 1000);
+	if (isPaused) {
+		isPaused = false;
+		startTime = Date.now() - elapsedTime;
+		timer = setInterval(updateTimer, 10); // Update every 10 milliseconds
+		updateButton('Pause Timer', 'fa-pause'); // Change button to show "Pause Timer"
+	}
+}
+
+function pauseTimer() {
+	if (!isPaused) {
+		clearInterval(timer); // Stop the timer
+		timer = null;
+		elapsedTime = Date.now() - startTime; // Save the elapsed time without resetting
+		isPaused = true;
+		// If elapsed time is greater than 0, show "Resume Timer", else show "Start Timer"
+		const text = elapsedTime > 0 ? 'Resume Timer' : 'Start Timer';
+		updateButton(text, 'fa-play');
+	} else {
+		// If paused and there is elapsed time, resume it
+		if (elapsedTime > 0) {
+			startTimer();
+		}
+	}
 }
 
 function stopTimer() {
 	clearInterval(timer);
+	timer = null;
+	elapsedTime = 0; // Reset the elapsed time
+	isPaused = true;
+	hasTimerStarted = false; // Allow the timer to be started again
+	document.getElementById('timer').innerHTML = 'Time: 00:00:000';
+	updateButton('Start Timer', 'fa-play'); // Update the button to show "Start Timer"
 }
 
 function resetTimer() {
-	stopTimer();
-	seconds = 0;
-	document.getElementById('timer').innerHTML = 'Time: 00:00';
+	stopTimer(); // This function will stop the timer and reset elapsed time
+	updateButton('Start Timer', 'fa-play'); // Always reset button to "Start Timer" when fully resetting
 }
 
-function formatTime(sec) {
-	let hours = Math.floor(sec / 3600);
-	let minutes = Math.floor((sec - (hours * 3600)) / 60);
-	let seconds = sec - (hours * 3600) - (minutes * 60);
+function updateTimer() {
+	elapsedTime = Date.now() - startTime;
+	document.getElementById('timer').innerHTML = 'Time: ' + formatTime(elapsedTime);
+}
 
-	if (hours < 10) { hours = "0" + hours; }
+function formatTime(milliseconds) {
+	let totalSeconds = Math.floor(milliseconds / 1000);
+	let minutes = Math.floor(totalSeconds / 60);
+	let seconds = totalSeconds - (minutes * 60);
+	let millis = milliseconds % 1000;
+
 	if (minutes < 10) { minutes = "0" + minutes; }
 	if (seconds < 10) { seconds = "0" + seconds; }
-	return hours + ':' + minutes + ':' + seconds;
+	millis = millis.toString().padStart(3, '0'); // Ensure three digits for milliseconds
+
+	return minutes + ':' + seconds + ':' + millis;
 }
 
-// Start the timer when the page loads
-window.onload = startTimer;
+document.getElementById('SolveButton').addEventListener('click', function () {
+	if (hasTimerStarted && !isPaused) {
+		pauseTimer(); // If the timer has started and is not paused, pause it.
+	}
+	solveSudoku();
+});
 
-var SIZE = 9;
-var SIZE_SQUARED = SIZE * SIZE;
-var SIZE_SQRT = Math.sqrt(SIZE);
-var NUM_ROWS = SIZE * SIZE * SIZE;
-var NUM_COLUMNS = 4 * SIZE * SIZE;
+document.getElementById('PauseButton').addEventListener('click', function () {
+	if (!hasTimerStarted) {
+		startTimer();
+		hasTimerStarted = true;
+	}
+	else {
+		// Toggle pause/resume based on the timer's state.
+		if (isPaused) {
+			startTimer();
+		}
+		else {
+			pauseTimer();
+		}
+	}
+});
+
+document.getElementById('ResetButton').addEventListener('click', resetGrid);
+
+const SIZE = 9;
+const SIZE_SQUARED = SIZE * SIZE;
+const SIZE_SQRT = Math.sqrt(SIZE);
+const NUM_ROWS = SIZE * SIZE * SIZE;
+const NUM_COLUMNS = 4 * SIZE * SIZE;
 function Node() {
 	this.up = this;
 	this.down = this;
@@ -48,30 +114,30 @@ function Node() {
 	this.rowID = [0, 0, 0];
 }
 
-var solution = [];
-var originalValues = [];
+let solution = [];
+let originalValues = [];
 
-var Grid = [];
-var matrix = [];
-var row = [];
+let Grid = [];
+let matrix = [];
+let row = [];
 
-var dlxHeadNode = new Node();
+let dlxHeadNode = new Node();
 
-for (var i = 0; i < NUM_COLUMNS; i++) {
+for (let i = 0; i < NUM_COLUMNS; i++) {
 	row.push(0);
 }
-for (var i = 0; i < NUM_ROWS; i++) {
+for (let i = 0; i < NUM_ROWS; i++) {
 	matrix.push(row.slice());
 }
-var isSolved = false;
+let isSolved = false;
 
-function SolveSudoku() {
-	ConstructExactCoverMatrix(matrix);
-	ConstructDoublyLinkedList(matrix);
+function solveSudoku() {
+	constructExactCoverMatrix(matrix);
+	constructDoublyLinkedList(matrix);
 
-	var Sudoku = [];
-	var row_temp = [];
-	for (var i = 0; i < SIZE; i++) {
+	let Sudoku = [];
+	let row_temp = [];
+	for (let i = 0; i < SIZE; i++) {
 		row_temp.push(0);
 	}
 
@@ -79,23 +145,21 @@ function SolveSudoku() {
 		Sudoku.push(row_temp.slice());
 	}
 
-	var str = "R1C1";
-	for (i = 1; i < SIZE + 1; i++) {
-		str = str.slice(0, 1) + i + str.slice(2, 3);
-		for (var j = 1; j < 10; j++) {
-			str = str.slice(0, 3) + j;
-			var value = Number(document.getElementById(str).value);
+	for (let i = 1; i <= SIZE; i++) {
+		for (let j = 1; j <= SIZE; j++) {
+			let cellId = `R${i}C${j}`;
+			let value = Number(document.getElementById(cellId).value);
 			if (value > 0) {
 				Sudoku[i - 1][j - 1] = value;
 			}
 		}
 	}
 
-	TransformListToCurrentGrid(Sudoku);
-	Search(0);
+	transformListToCurrentGrid(Sudoku);
+	search(0);
 
 	if (!isSolved) {
-		document.getElementById("OutcomeText").textContent = "No Solution";
+		document.getElementById("OutcomeText").textContent = "Invalid Sudoku";
 	}
 	else {
 		document.getElementById("OutcomeText").textContent = "Solved";
@@ -103,11 +167,11 @@ function SolveSudoku() {
 	isSolved = false;
 }
 
-function CoverColumn(column) {
+function coverColumn(column) {
 	column.left.right = column.right;
 	column.right.left = column.left;
-	for (var node = column.down; node !== column; node = node.down) {
-		for (var temp = node.right; temp !== node; temp = temp.right) {
+	for (let node = column.down; node !== column; node = node.down) {
+		for (let temp = node.right; temp !== node; temp = temp.right) {
 			temp.down.up = temp.up;
 			temp.up.down = temp.down;
 			temp.head.size--;
@@ -115,9 +179,9 @@ function CoverColumn(column) {
 	}
 }
 
-function UncoverColumn(column) {
-	for (var node = column.up; node !== column; node = node.up) {
-		for (var temp = node.left; temp !== node; temp = temp.left) {
+function uncoverColumn(column) {
+	for (let node = column.up; node !== column; node = node.up) {
+		for (let temp = node.left; temp !== node; temp = temp.left) {
 			temp.head.size++;
 			temp.down.up = temp;
 			temp.up.down = temp;
@@ -127,53 +191,53 @@ function UncoverColumn(column) {
 	column.right.left = column;
 }
 
-function Search(k) {
+function search(k) {
 
 	if (dlxHeadNode.right === dlxHeadNode) {
-		var row_temp = [];
-		for (var u = 0; u < SIZE; u++) {
+		let row_temp = [];
+		for (let u = 0; u < SIZE; u++) {
 			row_temp.push(0);
 		}
 		for (u = 0; u < SIZE; u++) {
 			Grid.push(row_temp.slice());
 		}
-		MapSolutionToGrid(Grid);
-		SolvedPuzzleOutput(Grid);
+		mapSolutionToGrid(Grid);
+		solvedPuzzleOutput(Grid);
 		isSolved = true;
 		return;
 	}
 	if (!isSolved) {
-		var column = dlxHeadNode.right;
-		for (var temp = column.right; temp.size > -1; temp = temp.right) {
+		let column = dlxHeadNode.right;
+		for (let temp = column.right; temp.size > -1; temp = temp.right) {
 			if (temp.size < column.size) {
 				column = temp;
 			}
 		}
-		CoverColumn(column);
+		coverColumn(column);
 
 		for (temp = column.down; temp !== column; temp = temp.down) {
 			solution[k] = temp;
-			for (var node = temp.right; node !== temp; node = node.right) {
-				CoverColumn(node.head);
+			for (let node = temp.right; node !== temp; node = node.right) {
+				coverColumn(node.head);
 			}
 
-			Search(k + 1);
+			search(k + 1);
 
 			temp = solution[k];
 			solution[k] = null;
 			column = temp.head;
 			for (node = temp.left; node !== temp; node = node.left) {
-				UncoverColumn(node.head);
+				uncoverColumn(node.head);
 			}
 		}
-		UncoverColumn(column);
+		uncoverColumn(column);
 	}
 }
 
-function ConstructExactCoverMatrix(matrix) {
-	var j = 0, counter = 0;
+function constructExactCoverMatrix(matrix) {
+	let j = 0, counter = 0;
 
-	for (var i = 0; i < NUM_ROWS; i++) {
+	for (let i = 0; i < NUM_ROWS; i++) {
 		matrix[i][j] = 1;
 		counter++;
 		if (counter >= SIZE) {
@@ -182,7 +246,7 @@ function ConstructExactCoverMatrix(matrix) {
 		}
 	}
 
-	var x = 0;
+	let x = 0;
 	counter = 1;
 	for (j = SIZE_SQUARED; j < 2 * SIZE_SQUARED; j++) {
 		for (i = x; i < counter * SIZE_SQUARED; i += SIZE)
@@ -207,12 +271,12 @@ function ConstructExactCoverMatrix(matrix) {
 	x = 0;
 	for (j = SIZE_SQRT * SIZE_SQUARED; j < NUM_COLUMNS; j++) {
 
-		for (var l = 0; l < SIZE_SQRT; l++) {
-			for (var k = 0; k < SIZE_SQRT; k++)
+		for (let l = 0; l < SIZE_SQRT; l++) {
+			for (let k = 0; k < SIZE_SQRT; k++)
 				matrix[x + l * SIZE + k * SIZE_SQUARED][j] = 1;
 		}
 
-		var temp = j + 1 - SIZE_SQRT * SIZE_SQUARED;
+		let temp = j + 1 - SIZE_SQRT * SIZE_SQUARED;
 
 		if (temp % (SIZE_SQRT * SIZE) === 0)
 			x += (SIZE_SQRT - 1) * SIZE_SQUARED + (SIZE_SQRT - 1) * SIZE + 1;
@@ -223,24 +287,24 @@ function ConstructExactCoverMatrix(matrix) {
 	}
 }
 
-function ConstructDoublyLinkedList(matrix) {
-	var header = new Node();
+function constructDoublyLinkedList(matrix) {
+	let header = new Node();
 	header.size = -1;
 
-	var temp = header;
+	let temp = header;
 
-	for (var i = 0; i < NUM_COLUMNS; i++) {
-		var newNode = new Node();
+	for (let i = 0; i < NUM_COLUMNS; i++) {
+		let newNode = new Node();
 		newNode.left = temp;
 		newNode.right = header;
 		temp.right = newNode;
 		temp = newNode;
 	}
 
-	var ID = [0, 1, 1];
+	let ID = [0, 1, 1];
 	for (i = 0; i < NUM_ROWS; i++) {
-		var topNode = header.right;
-		var prev = 5;
+		let topNode = header.right;
+		let prev = 5;
 
 		if (i !== 0 && i % SIZE_SQUARED === 0) {
 			ID = new Array(ID[0] - (SIZE - 1), ID[1] + 1, ID[2] - (SIZE - 1));
@@ -252,9 +316,9 @@ function ConstructDoublyLinkedList(matrix) {
 			ID = new Array(ID[0] + 1, ID[1], ID[2]);
 		}
 
-		for (var j = 0; j < NUM_COLUMNS; j++, topNode = topNode.right) {
+		for (let j = 0; j < NUM_COLUMNS; j++, topNode = topNode.right) {
 			if (matrix[i][j] === 1) {
-				var tempNode = new Node();
+				let tempNode = new Node();
 				tempNode.rowID = ID;
 				if (prev === 5) {
 					prev = tempNode;
@@ -280,13 +344,14 @@ function ConstructDoublyLinkedList(matrix) {
 	}
 	dlxHeadNode = header;
 }
-function TransformListToCurrentGrid(Puzzle) {
+function transformListToCurrentGrid(Puzzle) {
 	originalValues = [];
-	for (var i = 0; i < SIZE; i++) {
-		for (var j = 0; j < SIZE; j++) {
+	let column, temp;
+	for (let i = 0; i < SIZE; i++) {
+		for (let j = 0; j < SIZE; j++) {
 			if (Puzzle[i][j] > 0) {
 				loop1:
-				for (var column = dlxHeadNode.right; column !== dlxHeadNode; column = column.right) {
+				for (column = dlxHeadNode.right; column !== dlxHeadNode; column = column.right) {
 					loop2:
 					for (temp = column.down; temp !== column; temp = temp.down) {
 						if (temp.rowID[0] === Puzzle[i][j] && (temp.rowID[1] - 1) == i && (temp.rowID[2] - 1) == j) {
@@ -294,54 +359,55 @@ function TransformListToCurrentGrid(Puzzle) {
 						}
 					}
 				}
-				CoverColumn(column);
+				coverColumn(column);
 				originalValues.push(temp);
-				for (var node = temp.right; node != temp; node = node.right) {
-					CoverColumn(node.head);
+				for (let node = temp.right; node != temp; node = node.right) {
+					coverColumn(node.head);
 				}
 			}
 		}
 	}
 }
 
-function MapSolutionToGrid(grid) {
-	for (var t = 0; solution[t] != null; t++) {
-		grid[solution[t].rowID[1] - 1][solution[t].rowID[2] - 1] = solution[t].rowID[0];
+function mapSolutionToGrid(grid) {
+	for (let sol of solution) {
+		if (sol != null) {
+			grid[sol.rowID[1] - 1][sol.rowID[2] - 1] = sol.rowID[0];
+		}
 	}
-	for (t = 0; originalValues[t] != null; t++) {
-		grid[originalValues[t].rowID[1] - 1][originalValues[t].rowID[2] - 1] = originalValues[t].rowID[0];
+	for (let origVal of originalValues) {
+		if (origVal != null) {
+			grid[origVal.rowID[1] - 1][origVal.rowID[2] - 1] = origVal.rowID[0];
+		}
 	}
 }
-function SolvedPuzzleOutput(Sudoku) {
-
-	str = "R1C1";
-	for (var i = 1; i < 10; i++) {
-		str = str.slice(0, 1) + i + str.slice(2, 3);
-		for (var j = 1; j < 10; j++) {
-			str = str.slice(0, 3) + j;
-			var puzzleCell = document.getElementById(str);
-			if (puzzleCell.value == '')
+function solvedPuzzleOutput(Sudoku) {
+	for (let i = 1; i <= SIZE; i++) {
+		for (let j = 1; j <= SIZE; j++) {
+			let cellId = `R${i}C${j}`;
+			let puzzleCell = document.getElementById(cellId);
+			if (puzzleCell.value == '') {
 				puzzleCell.style.color = "#000000";
+			}
 			puzzleCell.value = Sudoku[i - 1][j - 1];
 			puzzleCell.readOnly = true;
 		}
 	}
 }
 
-function ResetGrid() {
-
-	str = "R1C1";
-	for (var i = 1; i < SIZE + 1; i++) {
-		str = str.slice(0, 1) + i + str.slice(2, 3);
-		for (var j = 1; j < SIZE + 1; j++) {
-			str = str.slice(0, 3) + j;
-			var puzzleCell = document.getElementById(str);
+function resetGrid() {
+	for (let i = 1; i <= SIZE; i++) {
+		for (let j = 1; j <= SIZE; j++) {
+			const cellId = `R${i}C${j}`;
+			const puzzleCell = document.getElementById(cellId);
 			puzzleCell.readOnly = false;
 			puzzleCell.value = "";
 			puzzleCell.style.color = "#beb0e9";
 		}
 	}
-	document.getElementById("OutcomeText").innerHTML = "&nbsp";
+	document.getElementById("OutcomeText").innerHTML = "&nbsp;";
+	resetTimer();
+	updateButton('Start Timer', 'fa-play');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -349,13 +415,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	inputs.forEach(input => {
 		input.addEventListener('keypress', function (e) {
-			validateSudokuInput(e, this.value);
+			if (validateSudokuInput(e, this.value) && !hasTimerStarted) {
+				startTimer();
+				hasTimerStarted = true; // The timer has now been started
+			}
 		});
 	});
 });
 
 function validateSudokuInput(e, number) {
-	var key = e.key;
+	let key = e.key;
 
 	if (!key.match(/[1-9]/) || number.length == 1) {
 		e.preventDefault();
@@ -365,13 +434,13 @@ function validateSudokuInput(e, number) {
 }
 
 ////////////////////////////////////////
-// Enable Directional Navigation
+// Directional Navigation
 ///////////////////////////////////
 
 function moveFocus(currentId, direction) {
 	// Extract the row and column number from the current ID
-	var row = parseInt(currentId.substring(1, 2), 10);
-	var col = parseInt(currentId.substring(3), 10);
+	let row = parseInt(currentId.substring(1, 2), 10);
+	let col = parseInt(currentId.substring(3), 10);
 
 	// Determine the new row and column based on the direction
 	switch (direction) {
@@ -398,17 +467,17 @@ function moveFocus(currentId, direction) {
 	if (col > 9) col = 1;
 
 	// Construct the new ID
-	var newId = 'R' + row + 'C' + col;
+	let newId = `R${row}C${col}`;
 
 	// Focus the new cell
-	var newCell = document.getElementById(newId);
+	let newCell = document.getElementById(newId);
 	if (newCell) {
 		newCell.focus();
 	}
 }
 
 // Add event listeners to all input elements
-var inputs = document.querySelectorAll('#SudokuGrid input[type="text"]');
+let inputs = document.querySelectorAll('#SudokuGrid input[type="text"]');
 inputs.forEach(function (input) {
 	input.addEventListener('keydown', function (e) {
 		if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
@@ -418,7 +487,4 @@ inputs.forEach(function (input) {
 	});
 });
 
-var solveButton = document.getElementById("SolveButton");
-var resetButton = document.getElementById("ResetButton");
-solveButton.addEventListener('click', SolveSudoku);
-resetButton.addEventListener('click', ResetGrid);
+
