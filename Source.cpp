@@ -31,12 +31,11 @@ int main() {
     cout << "Welcome\n\n" <<
         "The purpose of this project is to demonstrate the efficacy of different approaches to the exact cover problem.\n"
         "For a standard 9x9 Sudoku Board, the exact cover problem is to find a solution that satisfies the following constraints:\n\n"
-        "1. Each row contains the numbers 1 through 9\n"
-        "2. Each column contains the numbers 1 through 9\n"
-        "3. Each 3x3 subgrid contains the numbers 1 through 9\n"
-        "4. Each number appears only once in each row\n"
-        "5. Each number appears only once in each column\n"
-        "6. Each number appears only once in each 3x3 subgrid\n\n";
+        "1. Cell Constraint: Each cell must contain exactly one number\n"
+        "2. Row Constraint: Each number must appear exactly once in each row\n"
+        "3. Column Constraint: Each number must appear exactly once in each column\n"
+        "4. Box Constraint: Each number must appear exactly once in each 3x3 subgrid\n\n";
+    
 
     printCenteredTitle("Backtracking Algorithm", TOTAL_WIDTH, PADDING_CHAR);
     cout << "Time Complexity:   O(9^(N*N)) --> For every unassigned index, there are 9 possible options\n"
@@ -71,13 +70,15 @@ int main() {
             vectorBoard = createRandomSudokuBoard(arrayBoard);
 
             printCenteredTitle("Randomly Generated Sudoku Board", TOTAL_WIDTH, PADDING_CHAR);
-
+            /*
             cout << "Initial Vector Sudoku Board:\n";
             printVectorGridWithBorders(vectorBoard);
+            */
 
             cout << "Initial Array Sudoku Board:\n";
             printArrayGridWithBorders(arrayBoard);
             break;
+            
         case BACKTRACKING:
             if (solveSudokuUsingBacktracking(vectorBoard)) {
                 printCenteredTitle("Backtracking Algorithm", TOTAL_WIDTH, PADDING_CHAR);
@@ -90,10 +91,12 @@ int main() {
             break;
         case DANCINGLINKS:
             printCenteredTitle("Dancing Links (DLX) Algorithm", TOTAL_WIDTH, PADDING_CHAR);
+            /*
             cout << "Array Board Before passing to dlx:\n";
             printArrayGridWithBorders(arrayBoard);
+            */
             dlx.solveSudoku(arrayBoard);
-
+            
             cout << "Solved Array Sudoku Board:\n";
             printArrayGridWithBorders(arrayBoard);
             break;
