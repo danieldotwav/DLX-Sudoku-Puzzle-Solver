@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 html, body {
     margin: 0;
     padding: 0;
@@ -11,21 +18,43 @@ html, body {
 .timer__box {
     font-family: 'Nunito Sans', sans-serif;
     font-weight: bold;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     padding: 16px;
     max-width: 2500px;
+    -webkit-transition: .9s;
+    -o-transition: .9s;
     transition: .9s; /* Add transition for smooth color change */
     border: 2px solid transparent; /* Initialize border to be transparent */
     color: transparent; /* Make the text color transparent */
+    background-image: -o-linear-gradient(45deg, #F8CA00, #E97F02, #BD1550, #F8CA00);
     background-image: linear-gradient(45deg, #F8CA00, #E97F02, #BD1550, #F8CA00);
     background-size: 200% 200%; /* Large background size to allow for the animation */
     background-clip: text;
     -webkit-background-clip: text; /* For WebKit browsers */
+    -webkit-animation: gradient-shift 5s ease infinite;
     animation: gradient-shift 5s ease infinite; /* Define the animation */
 }
 
 /* Define the keyframes for the gradient animation */
+@-webkit-keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 @keyframes gradient-shift {
     0% {
         background-position: 0% 50%;
@@ -42,6 +71,7 @@ html, body {
 
 .banner {
     background: black;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     max-width: 100%;
     width: 110%;
@@ -50,11 +80,17 @@ html, body {
 .banner__content {
     padding: 16px;
     margin: 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
 .banner__text {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
     flex-grow: 1;
     line-height: 1.2;
     font-family: 'Nunito Sans', sans-serif;
@@ -76,18 +112,28 @@ html, body {
     cursor: pointer;
 }
 
-.banner__text,
-.banner__close > span {
-    color: floralwhite;
-}
+    .banner__text,
+    .banner__close > span {
+        color: floralwhite;
+    }
 
 .main-content {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     height: auto;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     padding: 40px;
 }
@@ -99,28 +145,42 @@ html, body {
 }
 
 .header__content {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
     justify-content: left;
     height: 100%;
     width: 100%;
     background-color: black;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .header__bottom {
     position: fixed;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
     justify-content: left;
     height: 100%;
     width: 100%;
     background-color: floralwhite;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .header__footer {
     position: fixed;
     bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: left;
+    -ms-flex-pack: left;
     justify-content: left;
     width: 100%;
     background-color: black;
@@ -129,8 +189,14 @@ html, body {
 
 .header .button-container {
     width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     padding: 10px 0;
 }
@@ -142,15 +208,19 @@ html, body {
     background-color: black;
 }
 
-.header .header-button .button-common {
-    width: auto;
-    font-size: 15px;
-}
+    .header .header-button .button-common {
+        width: auto;
+        font-size: 15px;
+    }
 
 .header__top,
 .header__bottom {
     font-family: 'Nunito Sans', sans-serif;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     line-height: 26.99px;
     text-align: left;
@@ -195,10 +265,12 @@ input[type="text"] {
 }
 
     input[type="text"]:hover {
+        -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
         box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2); /* Horizontal offset, vertical offset, blur radius, and color */
     }
 
     input[type="text"]:focus {
+        -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
         box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3); /* Adjust the color or size as needed */
     }
 
@@ -231,8 +303,13 @@ input[type="text"] {
 }
 
 .button-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     gap: 20px;
     width: 100%;
@@ -250,24 +327,37 @@ input[type="text"] {
     border: none;
     border-radius: 10px; /* Rounded corners */
     cursor: pointer;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     margin: 0;
     margin-bottom: 0;
     text-align: center;
     white-space: nowrap;
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    -webkit-transition: background-color 0.3s, -webkit-box-shadow 0.3s;
+    transition: background-color 0.3s, -webkit-box-shadow 0.3s;
+    -o-transition: background-color 0.3s, box-shadow 0.3s;
     transition: background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
 
     .button-common:hover {
         background-color: #333333; /* Darker shade on hover */
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
     }
 
     .button-common:active {
         background-color: #555555; /* Even darker on click */
+        -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow on click */
         position: relative;
         top: 2px; /* Simulate button press */
@@ -282,12 +372,19 @@ input[type="text"] {
     font-size: 15px;
     cursor: pointer;
     border-radius: 10px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     min-width: 150px;
     max-width: 150px;
     height: 30px;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
@@ -320,5 +417,7 @@ a, a:link, a:visited, a:hover, a:active {
     width: calc(100% - 140px); /* Subtract the width of the sidebar */
     margin: 0;
     padding: 10px 0;
+    -webkit-box-ordinal-group: 0;
+    -ms-flex-order: -1;
     order: -1; /* Ensure the outcome text is placed above the Sudoku grid */
 }

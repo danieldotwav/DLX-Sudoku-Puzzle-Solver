@@ -695,3 +695,6 @@ function setupPuzzle(puzzle) {
 document.querySelector(".banner__close").addEventListener("click", function () {
 	this.closest(".banner").style.display = "none";
 })
+
+
+document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
