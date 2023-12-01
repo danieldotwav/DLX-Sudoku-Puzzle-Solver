@@ -73,6 +73,24 @@ function formatTime(milliseconds) {
 	return minutes + ':' + seconds + ':' + millis;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+	const cells = document.querySelectorAll('#SudokuGrid input[type="text"]');
+
+	cells.forEach(cell => {
+		cell.addEventListener('keydown', function (e) {
+			// Check if the key pressed is backspace
+			if (e.key === 'Backspace' || e.key === 'Delete') {
+				// Check if the Sudoku grid is currently marked as invalid
+				if (document.getElementById("OutcomeText").textContent === "Invalid Sudoku :(") {
+					// Resume Timer
+					startTimer();
+					document.getElementById("OutcomeText").innerHTML = "&nbsp;";
+				}
+			}
+		});
+	});
+});
+
 document.getElementById('SolveButton').addEventListener('click', function () {
 	if (hasTimerStarted && !isPaused) {
 		pauseTimer(); // If the timer has started and is not paused, pause it.
@@ -159,10 +177,10 @@ function solveSudoku() {
 	search(0);
 
 	if (!isSolved) {
-		document.getElementById("OutcomeText").textContent = "Invalid Sudoku";
+		document.getElementById("OutcomeText").textContent = "Invalid Sudoku :(";
 	}
 	else {
-		document.getElementById("OutcomeText").textContent = "Solved";
+		document.getElementById("OutcomeText").textContent = "Solved!";
 	}
 	isSolved = false;
 }
@@ -402,7 +420,7 @@ function resetGrid() {
 			const puzzleCell = document.getElementById(cellId);
 			puzzleCell.readOnly = false;
 			puzzleCell.value = "";
-			puzzleCell.style.color = "#beb0e9";
+			puzzleCell.style.color = "#FF7F50";
 		}
 	}
 	document.getElementById("OutcomeText").innerHTML = "&nbsp;";
@@ -488,3 +506,186 @@ inputs.forEach(function (input) {
 });
 
 
+
+
+////////////////////////////////////////
+// Random Sudoku Generation
+///////////////////////////////////
+
+function generateFullSolution() {
+	let board = new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0));
+
+	function solveBoard(board, row, col) {
+		if (col === SIZE) {
+			row++;
+			col = 0;
+		}
+
+		if (row === SIZE) {
+			return true; // Puzzle solved
+		}
+
+		if (board[row][col] !== 0) {
+			return solveBoard(board, row, col + 1); // Skip filled cells
+		}
+
+		for (let num = 1; num <= SIZE; num++) {
+			if (isSafe(board, row, col, num)) {
+				board[row][col] = num;
+
+				if (solveBoard(board, row, col + 1)) {
+					return true;
+				}
+
+				board[row][col] = 0; // Backtrack
+			}
+		}
+
+		return false;
+	}
+
+	solveBoard(board, 0, 0);
+	return board;
+}
+
+function createRandomSudokuBoard(difficulty) {
+	let board = generateFullSolution();
+	let cellsToRemove = determineCellsToRemoveBasedOnDifficulty(difficulty);
+	removeCellsFromBoard(board, cellsToRemove);
+	return board;
+}
+
+function determineCellsToRemoveBasedOnDifficulty(difficulty) {
+	switch (difficulty) {
+		case 'Easy': return 30;
+		case 'Medium': return 50;
+		case 'Hard': return 65;
+		default: return 20;
+	}
+}
+
+function removeCellsFromBoard(board, cellsToRemove) {
+	for (let i = 0; i < cellsToRemove; i++) {
+		let row, col;
+		do {
+			row = Math.floor(Math.random() * SIZE);
+			col = Math.floor(Math.random() * SIZE);
+		} while (board[row][col] === 0);
+		board[row][col] = 0;
+	}
+}
+
+function setupPuzzle(puzzle) {
+	for (let i = 0; i < SIZE; i++) {
+		for (let j = 0; j < SIZE; j++) {
+			let cellId = `R${i + 1}C${j + 1}`;
+			let puzzleCell = document.getElementById(cellId);
+			puzzleCell.value = puzzle[i][j] !== 0 ? puzzle[i][j] : '';
+			puzzleCell.readOnly = puzzle[i][j] !== 0;
+			puzzleCell.style.color = puzzle[i][j] !== 0 ? "#000000" : "#FF7F50";
+		}
+	}
+}
+
+// Event listeners for generating puzzles
+document.getElementById('GenerateEasyButton').addEventListener('click', function () {
+	let puzzle = createRandomSudokuBoard('Easy');
+	setupPuzzle(puzzle);
+	document.getElementById("OutcomeText").innerHTML = "&nbsp;";
+	resetTimer();
+	
+});
+
+document.getElementById('GenerateMediumButton').addEventListener('click', function () {
+	let puzzle = createRandomSudokuBoard('Medium');
+	setupPuzzle(puzzle);
+	document.getElementById("OutcomeText").innerHTML = "&nbsp;";
+	resetTimer();
+
+});
+
+document.getElementById('GenerateHardButton').addEventListener('click', function () {
+	let puzzle = createRandomSudokuBoard('Hard');
+	setupPuzzle(puzzle);
+	document.getElementById("OutcomeText").innerHTML = "&nbsp;";
+	resetTimer();
+	
+});
+
+function solveSudokuUsingBacktracking(board) {
+	let emptySpot = findEmpty(board);
+	if (!emptySpot) return true; // Puzzle solved
+
+	let [row, col] = emptySpot;
+
+	for (let num = 1; num <= SIZE; num++) {
+		if (isSafe(board, row, col, num)) {
+			board[row][col] = num;
+			if (solveSudokuUsingBacktracking(board)) {
+				return true;
+			}
+			board[row][col] = 0; // Backtrack
+		}
+	}
+
+	return false;
+}
+
+function isSafe(board, row, col, num) {
+	// Check if the number is not already present in the current row
+	for (let i = 0; i < SIZE; i++) {
+		if (board[row][i] === num) {
+			return false;
+		}
+	}
+
+	// Check if the number is not already present in the current column
+	for (let i = 0; i < SIZE; i++) {
+		if (board[i][col] === num) {
+			return false;
+		}
+	}
+
+	// Check if the number is not already present in the current 3x3 subgrid
+	let subgridStartRow = row - row % 3;
+	let subgridStartCol = col - col % 3;
+	for (let i = 0; i < 3; i++) {
+		for (let j = 0; j < 3; j++) {
+			if (board[subgridStartRow + i][subgridStartCol + j] === num) {
+				return false;
+			}
+		}
+	}
+
+	// If none of the above conditions are violated, it's safe to place the number
+	return true;
+}
+
+
+function findEmpty(board) {
+	for (let i = 0; i < SIZE; i++) {
+		for (let j = 0; j < SIZE; j++) {
+			if (board[i][j] == 0) {
+				return [i, j]; // Return the row, col where an empty cell is found
+			}
+		}
+	}
+	return null; // No empty cell is found
+}
+
+function setupPuzzle(puzzle) {
+	for (let i = 0; i < SIZE; i++) {
+		for (let j = 0; j < SIZE; j++) {
+			let cellId = `R${i + 1}C${j + 1}`;
+			let puzzleCell = document.getElementById(cellId);
+			let value = puzzle[i][j];
+			puzzleCell.value = value !== 0 ? value : ''; // Set the value if it's not zero, otherwise set to empty string
+			puzzleCell.readOnly = value !== 0; // Set readOnly if the cell is part of the puzzle
+			if (value !== 0) {
+				puzzleCell.style.color = "#000000"; // Change text color to black for puzzle numbers
+			} else {
+				puzzleCell.style.color = "#FF7F50"; // Change text color to light gray for empty cells
+			}
+		}
+	}
+}

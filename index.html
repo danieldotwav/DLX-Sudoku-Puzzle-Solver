@@ -11,19 +11,35 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="header">
-            <header-top>
-                DLX Sudoku Puzzle Solver
-            </header-top>
+    <div class="header">
+        <header-top>
+            DLX Sudoku Puzzle Solver
+        </header-top>
 
-            <header-bottom>
-                Daniel Rivas
-                <div id="timer" class="timer-box">Time: 00:00</div>
-            </header-bottom>
+        <!-- New buttons for puzzle generation -->
+        <div class="header-content">
+            <div class="button-container header-button">
+                <button type="button" class="button-common" id="GenerateEasyButton">
+                    <span>Easy Puzzle</span>
+                </button>
+            </div>
+            <div class="button-container header-button">
+                <button type="button" class="button-common" id="GenerateMediumButton">
+                    <span>Medium Puzzle</span>
+                </button>
+            </div>
+            <div class="button-container header-button">
+                <button type="button" class="button-common" id="GenerateHardButton">
+                    <span>Hard Puzzle</span>
+                </button>
+            </div>
         </div>
-    </div>
 
+        <header-bottom>
+            <a href="https://github.com/danieldotwav" target="_blank">Daniel Rivas</a>
+            <div id="timer" class="timer-box">Time: 00:00</div>
+        </header-bottom>
+    </div>
     <div>
         <div class="main-content">
             <header id="OutcomeText">&nbsp;</header>
@@ -145,8 +161,6 @@
                     <span>Start Timer</span>
                 </button>
             </div>
-
-            <div class="clear"></div>
         </div>
     </div>
 

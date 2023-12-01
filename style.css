@@ -9,7 +9,7 @@ html, body, div {
 }
 
 .timer-box {
-    cursor: pointer;
+
     font-family: 'Nunito Sans', sans-serif;
     font-weight: bold;
     text-align: left;
@@ -38,14 +38,6 @@ html, body, div {
         background-position: 0% 50%;
     }
 }
-
-.timer-box:hover {
-    border-image: repeating-linear-gradient(45deg, #F8CA00, #E97F02, #BD1550, #F8CA00) 8;
-    -webkit-mask: conic-gradient(from 180deg at top 2px right 2px, #0000 90deg, #000 0) 200% 0 /200% 2px border-box no-repeat, conic-gradient(at bottom 2px left 2px, #0000 90deg, #000 0) 0 200%/2px 200% border-box no-repeat, linear-gradient(#000 0 0) padding-box no-repeat;
-    transition: 6s, -webkit-mask-position .9s .1s; /* Transition for border effect */
-    color: #CC333F; /* Change font color on hover */
-}
-
 
 .main-content {
     display: flex;
@@ -81,16 +73,53 @@ html, body, div {
 .header {
     display: flex; /* Establish a flex container */
     flex-direction: column; /* Stack children vertically */
-    justify-content: space-between; /* Align children to the start of the main axis */
+    justify-content: center; /* Align children to the start of the main axis */
     align-items: center; /* Horizontally center the children on the cross axis */
     position: fixed;
     height: 100vh; /* Full height of the viewport */
-    top: 0;
-    left: 0;
     width: 140px; /* Adjust the width as needed */
     background: black;
     color: white;
     box-sizing: border-box;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the buttons vertically */
+    height: 100%; /* Take the full height of the header */
+    width: 100%; /* Match the width of the header */
+    align-items: center;
+    background-color: black;
+}
+
+.header .button-container {
+    width: 100%; /* Full width of the container to center content */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* This will vertically center the text in the buttons */
+    padding: 10px 0; /* This padding is for the top and bottom inside the button container */
+}
+
+.header .button-container:not(:last-child) {
+    margin-bottom: 5px; /* Adjust this to control the space between the buttons */
+}
+
+.header .button-container:last-child {
+    margin-bottom: 0; /* Ensure there is no margin at the bottom of the last button container */
+}
+
+.header .header-button {
+    width: 60%; /* Make button container fill the header */
+    padding-left: 10px;
+    margin-bottom: 2px;
+    padding: 0px;
+    background-color: black;
+}
+
+.header .header-button .button-common {
+    width: auto;
+    font-size: 15px;
 }
 
 header-top,
@@ -119,7 +148,7 @@ header-bottom {
     font-variant: normal;
     width: 100%;
     font-weight: 400;
-    padding-bottom: 20px; /* Optional space from the bottom */
+    padding-bottom: 50%;
 }
 
 td {
@@ -138,7 +167,7 @@ input[type="text"] {
     border: 0;
     text-align: center;
     font-size: 30px;
-    color: #beb0e9;
+    color: #FF7F50;
     outline: none;
 }
 
@@ -187,13 +216,14 @@ input[type="text"] {
     padding: 10px; /* Padding to ensure content doesn't touch the sides */
 }
 
+
 /* Base styles for all buttons */
 .button-common {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 17px;
     color: #ffffff;
     padding: 5px 18px; /* Adjust padding to fit content */
-    background-color: #000000;
+    background-color: black;
     border: none; /* No border */
     border-radius: 10px; /* Rounded corners */
     cursor: pointer;
@@ -242,4 +272,9 @@ input[type="text"] {
 /* Icon spacing */
 .button-common i {
     margin-right: 8px; /* Add some space between the icon and text */
+}
+
+a, a:link, a:visited, a:hover, a:active {
+    color: floralwhite; /* Set your preferred color here */
+    text-decoration: none; /* Optional: removes underline from links */
 }
