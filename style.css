@@ -1,4 +1,4 @@
-html, body, div {
+html, body {
     margin: 0;
     padding: 0;
     border: 0;
@@ -8,12 +8,13 @@ html, body, div {
     background-color: floralwhite;
 }
 
-.timer-box {
-
+.timer__box {
     font-family: 'Nunito Sans', sans-serif;
     font-weight: bold;
-    text-align: left;
-    position: relative;
+    align-items: center;
+    display: flex;
+    padding: 16px;
+    max-width: 2500px;
     transition: .9s; /* Add transition for smooth color change */
     border: 2px solid transparent; /* Initialize border to be transparent */
     color: transparent; /* Make the text color transparent */
@@ -39,81 +40,105 @@ html, body, div {
     }
 }
 
-.main-content {
-    display: flex;
-    flex-direction: column; /* Stack children (grid and buttons) vertically */
-    justify-content: center; /* Center children vertically in the container */
-    align-items: center; /* Center children horizontally in the container */
-    height: 100vh;
-    margin-left: 140px; /* Adjust this value to match the width of your sidebar */
+.banner {
+    background: black;
     box-sizing: border-box;
-    padding: 20px; /* Optional: Adjust padding to create some space around the content */
+    max-width: 100%;
+    width: 110%;
 }
 
-#SudokuGrid {
-    max-width: 500px; /* Your desired max width */
-    width: 100%; /* Will resize responsively */
-    aspect-ratio: 1; /* Keep the grid square */
-    border: 4px solid black;
-    border-collapse: collapse;
-    background-color: white;
+.banner__content {
+    padding: 16px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
 }
 
-#OutcomeText {
+.banner__text {
+    flex-grow: 1;
+    line-height: 1.2;
     font-family: 'Nunito Sans', sans-serif;
     font-weight: bold;
-    color: black;
-    text-align: center;
-    width: calc(100% - 140px); /* Subtract the width of the sidebar */
-    margin: 0;
-    padding: 10px 0; /* Adjust vertical padding as needed */
-    order: -1; /* Ensure the outcome text is placed above the Sudoku grid */
+}
+
+.banner__name {
+    line-height: 26.99px;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    width: 100%;
+    font-weight: 400;
+}
+
+.banner__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.banner__text,
+.banner__close > span {
+    color: floralwhite;
+}
+
+.main-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    box-sizing: border-box;
+    padding: 40px;
 }
 
 .header {
-    display: flex; /* Establish a flex container */
-    flex-direction: column; /* Stack children vertically */
-    justify-content: center; /* Align children to the start of the main axis */
-    align-items: center; /* Horizontally center the children on the cross axis */
-    position: fixed;
-    height: 100vh; /* Full height of the viewport */
-    width: 140px; /* Adjust the width as needed */
+    width: auto;
     background: black;
     color: white;
+}
+
+.header__content {
+    display: flex;
+    justify-content: left;
+    height: 100%;
+    width: 100%;
+    background-color: black;
     box-sizing: border-box;
 }
 
-.header-content {
+.header__bottom {
+    position: fixed;
     display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center the buttons vertically */
-    height: 100%; /* Take the full height of the header */
-    width: 100%; /* Match the width of the header */
-    align-items: center;
+    justify-content: left;
+    height: 100%;
+    width: 100%;
+    background-color: floralwhite;
+    box-sizing: border-box;
+}
+
+.header__footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: left;
+    width: 100%;
     background-color: black;
+    height: 50px;
 }
 
 .header .button-container {
-    width: 100%; /* Full width of the container to center content */
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center; /* This will vertically center the text in the buttons */
-    padding: 10px 0; /* This padding is for the top and bottom inside the button container */
-}
-
-.header .button-container:not(:last-child) {
-    margin-bottom: 5px; /* Adjust this to control the space between the buttons */
-}
-
-.header .button-container:last-child {
-    margin-bottom: 0; /* Ensure there is no margin at the bottom of the last button container */
+    align-items: center;
+    padding: 10px 0;
 }
 
 .header .header-button {
-    width: 60%; /* Make button container fill the header */
+    width: 100%;
     padding-left: 10px;
     margin-bottom: 2px;
-    padding: 0px;
     background-color: black;
 }
 
@@ -122,11 +147,10 @@ html, body, div {
     font-size: 15px;
 }
 
-header-top,
-header-bottom {
+.header__top,
+.header__bottom {
     font-family: 'Nunito Sans', sans-serif;
     display: flex;
-    flex-direction: column;
     align-items: center;
     line-height: 26.99px;
     text-align: left;
@@ -134,21 +158,20 @@ header-bottom {
     padding-right: 20px;
 }
 
-header-top {
+.header__title {
     font-size: 26px;
     font-style: normal;
     font-variant: normal;
     font-weight: 400;
-    padding-top: 20px; /* Optional space from the top */
 }
 
-header-bottom {
+header__name {
+    line-height: 26.99px;
     font-size: 16px;
     font-style: normal;
     font-variant: normal;
     width: 100%;
     font-weight: 400;
-    padding-bottom: 50%;
 }
 
 td {
@@ -209,32 +232,33 @@ input[type="text"] {
 
 .button-container {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    flex-wrap: wrap; /* Allow the buttons to wrap onto the next line if needed */
-    gap: 20px; /* Provide some space between buttons if they wrap */
-    width: 100%; /* Full width of the container to center content */
-    padding: 10px; /* Padding to ensure content doesn't touch the sides */
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 0;
 }
-
 
 /* Base styles for all buttons */
 .button-common {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 17px;
     color: #ffffff;
-    padding: 5px 18px; /* Adjust padding to fit content */
+    padding: 5px 18px;
     background-color: black;
-    border: none; /* No border */
+    border: none;
     border-radius: 10px; /* Rounded corners */
     cursor: pointer;
-    display: inline-flex; /* Use flexbox for proper alignment */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
-    margin: 0; /* Space out buttons */
-    text-align: center; /* Ensure text is centered within the button */
-    white-space: nowrap; /* Prevent text from wrapping */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
-    transition: background-color 0.3s, box-shadow 0.3s; /* Transition for smooth hover effect */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    margin-bottom: 0;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
     .button-common:hover {
@@ -253,17 +277,17 @@ input[type="text"] {
 .timer-button {
     background-color: black;
     color: white;
-    padding: 1px 20px; /* Reduced padding */
+    padding: 1px 20px;
     font-family: 'Nunito Sans', sans-serif;
-    font-size: 15px; /* Reduced font size */
+    font-size: 15px;
     cursor: pointer;
     border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 150px; /* Reduced minimum width */
-    max-width: 150px; /* Reduced maximum width */
-    height: 30px; /* Reduced height */
+    min-width: 150px;
+    max-width: 150px;
+    height: 30px;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
@@ -271,10 +295,30 @@ input[type="text"] {
 
 /* Icon spacing */
 .button-common i {
-    margin-right: 8px; /* Add some space between the icon and text */
+    margin-right: 8px;
 }
 
 a, a:link, a:visited, a:hover, a:active {
-    color: floralwhite; /* Set your preferred color here */
-    text-decoration: none; /* Optional: removes underline from links */
+    color: floralwhite;
+    text-decoration: none;
+}
+
+#SudokuGrid {
+    max-width: 300px;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 4px solid black;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+#OutcomeText {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    width: calc(100% - 140px); /* Subtract the width of the sidebar */
+    margin: 0;
+    padding: 10px 0;
+    order: -1; /* Ensure the outcome text is placed above the Sudoku grid */
 }
