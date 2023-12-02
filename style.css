@@ -352,8 +352,22 @@ html, body {
     border: 0;
     font-size: 100%;
     font: inherit;
-    vertical-align: middle;
     background-color: floralwhite;
+    min-height: 100vh;
+    /* mobile viewport bug fix */
+    min-height: -webkit-fill-available;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+/* Avoid Chrome to see Safari hack */
+@supports (-webkit-touch-callout: none) {
+    body {
+        /* The hack for Safari */
+        height: -webkit-fill-available;
+    }
 }
 
 .timer__box {
