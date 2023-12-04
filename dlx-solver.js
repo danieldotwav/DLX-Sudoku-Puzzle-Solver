@@ -509,6 +509,14 @@ inputs.forEach(function (input) {
 // Random Sudoku Generation
 ///////////////////////////////////
 
+// Fisher-Yates shuffle algorithm for an unbiased shuffle
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		let j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+}
+
 function generateFullSolution() {
 	let board = new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0));
 
@@ -526,7 +534,10 @@ function generateFullSolution() {
 			return solveBoard(board, row, col + 1); // Skip filled cells
 		}
 
-		for (let num = 1; num <= SIZE; num++) {
+		let numbers = Array.from({ length: SIZE }, (_, i) => i + 1);
+		shuffleArray(numbers);
+
+		for (let num of numbers) {
 			if (isSafe(board, row, col, num)) {
 				board[row][col] = num;
 
@@ -537,7 +548,6 @@ function generateFullSolution() {
 				board[row][col] = 0; // Backtrack
 			}
 		}
-
 		return false;
 	}
 
