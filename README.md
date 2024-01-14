@@ -22,6 +22,8 @@ This Sudoku Solver project is an interactive web application designed to solve S
    - [Algorithmic Efficiency](#algorithmic-efficiency)
 9. [Acknowledgements](#acknowledgements)
 
+![Screenshot 2023-12-19 214241](https://github.com/danieldotwav/DLX-Sudoku-Puzzle-Solver/assets/31682816/597b3228-e0d6-45c2-b625-7d7c0b14969d)
+
 # Introduction
 
 This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver implementing Donald Knuth's Dancing Links Algorithm. This project not only allows for solving traditional Sudoku puzzles but also offers a unique, interactive experience through its web-based interface.
