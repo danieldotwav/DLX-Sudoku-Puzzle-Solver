@@ -2,6 +2,10 @@
 
 This Sudoku Solver project is an interactive web application designed to solve Sudoku puzzles. It combines HTML, CSS, JavaScript, and C++ to create a user-friendly interface for inputting puzzles, a timer to track solving time, and an efficient algorithm to solve the puzzles.
 
+**Click on the link below, enter a Sudoku puzzle, and use the solve feature. The web-based application also supports random puzzle generation, offering three tiers of difficulty**
+
+[Online Sudoku Solver](https://danieldotwav.github.io/DLX-Sudoku-Puzzle-Solver/)
+
 # Table of Contents
 1. [Introduction](#introduction)
 2. [Features](#features)
@@ -48,9 +52,6 @@ This repository contains the DLX Sudoku Solver, an advanced Sudoku puzzle solver
 - A C++ compiler for running the Sudoku solving algorithm.
 
 ### Web-Based Solver: 
-**Click on the link below, enter a Sudoku puzzle, and use the solve feature.**
-
-[Online Sudoku Solver](https://danieldotwav.github.io/DLX-Sudoku-Puzzle-Solver/)
 
 - **Interactive Solver**: Enter Sudoku puzzles manually or paste pre-filled grids.
 - **Automatic Solution**: Solves puzzles instantly and indicates if no solution exists.
