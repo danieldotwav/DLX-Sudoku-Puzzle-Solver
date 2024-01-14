@@ -255,53 +255,66 @@ function search(k) {
 function constructExactCoverMatrix(matrix) {
 	let j = 0, counter = 0;
 
+	// Filling in the Row-Value Constraints
 	for (let i = 0; i < NUM_ROWS; i++) {
 		matrix[i][j] = 1;
 		counter++;
 		if (counter >= SIZE) {
-			j++;
-			counter = 0;
+			j++; // Move to the next column after filling SIZE cells
+			counter = 0; // Reset counter
 		}
 	}
 
+	// Filling in the Column-Value Constraints
 	let x = 0;
 	counter = 1;
 	for (j = SIZE_SQUARED; j < 2 * SIZE_SQUARED; j++) {
-		for (i = x; i < counter * SIZE_SQUARED; i += SIZE)
+		for (i = x; i < counter * SIZE_SQUARED; i += SIZE) {
 			matrix[i][j] = 1;
+		}
 
+		// Adjusting row and counter values for each constraint
 		if ((j + 1) % SIZE === 0) {
 			x = counter * SIZE_SQUARED;
 			counter++;
 		}
-		else
+		else {
 			x++;
+		}
 	}
 
+	// Filling in the Box-Value Constraints
 	j = 2 * SIZE_SQUARED;
 	for (i = 0; i < NUM_ROWS; i++) {
 		matrix[i][j] = 1;
 		j++;
-		if (j >= SIZE_SQRT * SIZE_SQUARED)
+		if (j >= SIZE_SQRT * SIZE_SQUARED) {
 			j = 2 * SIZE_SQUARED;
+		}
 	}
 
+	// Filling in the Cell Occupancy Constraint
 	x = 0;
 	for (j = SIZE_SQRT * SIZE_SQUARED; j < NUM_COLUMNS; j++) {
 
+		// Nested loops to set the appropriate cells to 1
 		for (let l = 0; l < SIZE_SQRT; l++) {
-			for (let k = 0; k < SIZE_SQRT; k++)
+			for (let k = 0; k < SIZE_SQRT; k++) {
 				matrix[x + l * SIZE + k * SIZE_SQUARED][j] = 1;
+			}
 		}
 
+		// Logic to update the row position based on the constraints
 		let temp = j + 1 - SIZE_SQRT * SIZE_SQUARED;
-
-		if (temp % (SIZE_SQRT * SIZE) === 0)
+		if (temp % (SIZE_SQRT * SIZE) === 0) {
 			x += (SIZE_SQRT - 1) * SIZE_SQUARED + (SIZE_SQRT - 1) * SIZE + 1;
-		else if (temp % SIZE === 0)
+		}
+		else if (temp % SIZE === 0) {
 			x += SIZE * (SIZE_SQRT - 1) + 1;
-		else
+		}
+		else {
 			x++;
+		}
 	}
 }
 
@@ -311,6 +324,7 @@ function constructDoublyLinkedList(matrix) {
 
 	let temp = header;
 
+	// Creating the header nodes for each column
 	for (let i = 0; i < NUM_COLUMNS; i++) {
 		let newNode = new Node();
 		newNode.left = temp;
@@ -319,11 +333,13 @@ function constructDoublyLinkedList(matrix) {
 		temp = newNode;
 	}
 
+	// Creating and linking the rest of the nodes
 	let ID = [0, 1, 1];
 	for (i = 0; i < NUM_ROWS; i++) {
 		let topNode = header.right;
 		let prev = 5;
 
+		// Logic to adjust the ID array based on the current row
 		if (i !== 0 && i % SIZE_SQUARED === 0) {
 			ID = new Array(ID[0] - (SIZE - 1), ID[1] + 1, ID[2] - (SIZE - 1));
 		}
@@ -334,6 +350,7 @@ function constructDoublyLinkedList(matrix) {
 			ID = new Array(ID[0] + 1, ID[1], ID[2]);
 		}
 
+		// Creating nodes and linking them in the list
 		for (let j = 0; j < NUM_COLUMNS; j++, topNode = topNode.right) {
 			if (matrix[i][j] === 1) {
 				let tempNode = new Node();
@@ -342,21 +359,25 @@ function constructDoublyLinkedList(matrix) {
 					prev = tempNode;
 				}
 
+				// Linking the new node with its neighbors
 				tempNode.left = prev;
 				tempNode.right = prev.right;
 				tempNode.right.left = tempNode;
 				prev.right = tempNode;
+
+				// Linking the node to the topNode and updating pointers
 				tempNode.head = topNode;
 				tempNode.down = topNode;
 				tempNode.up = topNode.up;
 				topNode.up.down = tempNode;
 				topNode.up = tempNode;
 
+				// Setting the down pointer of topNode when it's the first node in its column
 				if (topNode.size === 0) {
 					topNode.down = tempNode;
 				}
-				topNode.size++;
-				prev = tempNode;
+				topNode.size++; // Incrementing the size of the column
+				prev = tempNode; // Moving to the next node
 			}
 		}
 	}
@@ -368,17 +389,21 @@ function transformListToCurrentGrid(Puzzle) {
 	for (let i = 0; i < SIZE; i++) {
 		for (let j = 0; j < SIZE; j++) {
 			if (Puzzle[i][j] > 0) {
+				// Searching the linked list for the corresponding node
 				loop1:
 				for (column = dlxHeadNode.right; column !== dlxHeadNode; column = column.right) {
 					loop2:
 					for (temp = column.down; temp !== column; temp = temp.down) {
+						// Finding the node that matches the puzzle value and position
 						if (temp.rowID[0] === Puzzle[i][j] && (temp.rowID[1] - 1) == i && (temp.rowID[2] - 1) == j) {
 							break loop1;
 						}
 					}
 				}
+				// Covering the column and storing the original values
 				coverColumn(column);
 				originalValues.push(temp);
+				// Covering the remaining columns in the row
 				for (let node = temp.right; node != temp; node = node.right) {
 					coverColumn(node.head);
 				}

@@ -154,6 +154,7 @@ VectorSudokuBoard createRandomSudokuBoard(int arrayBoard[][SIZE]) {
 // Uses backtracking to solve the Sudoku board
 bool solveSudokuUsingBacktracking(VectorSudokuBoard& board) {
     int row, col;
+    clock_t timer1;
 
     // If there are no unassigned locations, we are done
     if (!findEmpty(board, row, col))

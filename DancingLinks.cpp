@@ -123,7 +123,7 @@ void DancingLinks::buildExactCoverMatrix(bool grid[NUM_ROWS][NUM_COLS]) {
 	std::cout << std::endl;
 	*/
 
-	// Column Constraints: Ensure each 
+	// Column Constraints
 	int x{ 0 };
 	count = 1;
 
